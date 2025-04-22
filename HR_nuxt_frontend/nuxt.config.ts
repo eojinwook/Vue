@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       titleTemplate: "%s - NuxtJS Admin Template",
-      title: "79HR",
+      title: "HR",
     },
   },
 
