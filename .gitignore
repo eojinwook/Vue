@@ -60,3 +60,7 @@ HR_nuxt_frontend/.nuxt/tsconfig.json
 HR_nuxt_frontend/.nuxt/tsconfig.server.json
 HR_nuxt_frontend/.nuxt/dev/index.mjs
 HR_nuxt_frontend/.nuxt/types/nitro-imports.d.ts
+HR_nuxt_backend/.gradle/buildOutputCleanup/cache.properties
+HR_nuxt_backend/.gradle/file-system.probe
+HR_nuxt_backend/.gradle/7.6/executionHistory/executionHistory.bin
+HR_nuxt_backend/.gradle/buildOutputCleanup/outputFiles.bin
