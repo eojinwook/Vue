@@ -3,6 +3,21 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
+
+# Gradle (백엔드)
+.gradle/
+build/
+*.jar
+
+# Nuxt (프론트엔드)
+.nuxt/
+dist/
+node_modules/
+.nitro/
+
+# 환경 설정
+.env
+
 # Node artifact files
 node_modules/
 dist/
