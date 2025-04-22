@@ -3,7 +3,7 @@ HR_nuxt_backend/.gradle/
 
 # ✅ 프론트엔드 Nuxt 빌드 결과 무시
 HR_nuxt_frontend/.nuxt/
-misc.xml
+.idea/misc.xml
 # -------------------------------
 # 📦 Gradle (Spring Boot 백엔드)
 # -------------------------------
