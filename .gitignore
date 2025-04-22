@@ -48,3 +48,15 @@ Thumbs.db
 *.mov
 *.wmv
 
+HR_nuxt_backend/.gradle/7.6/executionHistory/executionHistory.lock
+HR_nuxt_backend/.gradle/7.6/fileHashes/fileHashes.bin
+HR_nuxt_backend/.gradle/7.6/fileHashes/fileHashes.lock
+HR_nuxt_backend/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+HR_nuxt_frontend/.nuxt/app.config.mjs
+HR_nuxt_frontend/.nuxt/nitro.json
+HR_nuxt_frontend/.nuxt/nuxt.d.ts
+HR_nuxt_frontend/.nuxt/nuxt.json
+HR_nuxt_frontend/.nuxt/tsconfig.json
+HR_nuxt_frontend/.nuxt/tsconfig.server.json
+HR_nuxt_frontend/.nuxt/dev/index.mjs
+HR_nuxt_frontend/.nuxt/types/nitro-imports.d.ts
