@@ -25,8 +25,8 @@
       , D.TIME
       FROM DAY_ATTD D
       , EMPLOYEE_BASIC E
-      WHERE D.EMP_CODE = #{empCode}
-      AND D.APPLY_DAY = #{applyDay}
+  WHERE D.EMP_CODE = #{empCode} <!--'EMP-00' -->
+      AND D.APPLY_DAY = #{applyDay}  <!--'2025-04-02' -->
       AND D.EMP_CODE = E.EMP_CODE
    </select>
 
