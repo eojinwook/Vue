@@ -39,6 +39,8 @@ const selectedRow = ref({})
 const modalStatus = ref('insert')
 const targetTime = ref('')
 const targetDayAttdCode = ref('')
+const inputHour = ref('');
+const inputMinute = ref('');
 
 // Table Columns
 const headers: AttenHeaders[] = [
@@ -82,6 +84,8 @@ const onAddAttendanceClick = () => {
   const now = new Date()
 
   time.value = `${now.getHours()}${(`0${now.getMinutes()}`).slice(-2)}`
+
+  
   console.log(time.value)
 }
 
@@ -330,7 +334,7 @@ const onRowClick = async (event: any, item: any) => {
                     일근태 추가
                   </VBtn>
                 </template>
-
+d
                 <VContainer>
                   <DialogCloseBtn @click="isAttendanceDialogVisible = !isAttendanceDialogVisible" />
                 </VContainer>

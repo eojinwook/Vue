@@ -1,3 +1,9 @@
+<!-- 
+ 2025.04.25 어진욱 인사고과 조회 필터링 작업
+
+ 최초 데이터 바인딩은 onMounted에서 가져옴
+  -->
+
 <script setup lang="ts">
 import { baseStore } from '@/store/hr/base'
 import { evalStore } from '@/store/hr/eval'
@@ -133,9 +139,9 @@ onMounted(() => {
         title="인사고과 조회"
         >
       -->
-      <VSelect v-model="searchYear" class="ma-3" label="검색년도" :items="yearList" variant="outlined" />
-      <VSelect v-model="searchDept" class="ma-3" label="부서명" :items="deptList" variant="outlined" />
       <VSelect v-model="searchEmp" class="ma-3" label="사원명" :items="empList" variant="outlined" />
+      <!-- <VSelect v-model="searchDept" class="ma-3" label="부서명" :items="deptList" variant="outlined" /> -->
+      <VSelect v-model="searchYear" class="ma-3" label="검색년도" :items="yearList" variant="outlined" />
       <VBtn class="ml-3" color="primary" @click="searchEmpEval">
         사원 조회
       </VBtn>

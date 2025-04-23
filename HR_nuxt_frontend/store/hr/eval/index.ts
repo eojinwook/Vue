@@ -73,6 +73,8 @@ export const evalStore = defineStore('evalStore', {
 
         this.evalList = response.data.selEmpEvalList
 
+        alert("추가완료되었습니다")
+
         console.log('추가완료', response.data)
 
         return response.data

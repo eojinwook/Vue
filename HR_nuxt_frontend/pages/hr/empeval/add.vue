@@ -174,6 +174,7 @@ const filteredDisqualificationList = computed(() => disqualificationList.value.f
 const filteredCareerList = computed(() => careerList.value.filter(item => item !== null && item !== ''))
 
 const btnAddEmpEval = async () => {
+  
   if (!searchYear.value || !searchDept.value || !searchEmp.value || !positionName.value || !numberOfCertificate.value || !attendanceStatus.value || !remainingHoliday.value || !disqualification.value || !career.value) {
     alert('모든 슬롯 창을 선택하거나 값을 입력해주세요.')
 
