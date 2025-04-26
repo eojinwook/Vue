@@ -42,6 +42,8 @@
       )
    </insert>
 
+
+
     <resultMap type="kr.co.seoulit.erp.hr.affair.to.EmployeeBasicTO" id="empBasicResult">
         <result property="companyCode" column="COMPANY_CODE" />
         <result property="workplaceName" column="WORKPLACE_NAME" />

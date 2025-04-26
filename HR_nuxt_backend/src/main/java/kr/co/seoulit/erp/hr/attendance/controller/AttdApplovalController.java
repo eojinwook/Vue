@@ -26,7 +26,7 @@ public class AttdApplovalController {
 	private AttdServiceFacade attdServiceFacade;
 	private ModelMap modelMap = new ModelMap();
 
-//	********************* ������ΰ��� ���� _2020.08.28 _�ؼ� *********************
+
 	@GetMapping(value = "/attendanceApploval")    //조회하기
 	public ModelMap findRestAttdListByDept(
 			@RequestParam HashMap<String, String> attdApplMap,

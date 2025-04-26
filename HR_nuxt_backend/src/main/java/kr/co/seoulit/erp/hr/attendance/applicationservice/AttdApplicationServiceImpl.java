@@ -28,6 +28,7 @@ public class AttdApplicationServiceImpl implements AttdApplicationService {
 	@Autowired
 	private AnnualVacationDAO annualVacationDAO;
 
+
 	@Override
 	public ArrayList<DayAttdTO> findDayAttdList(String empCode, String applyDay) {
 		// TODO Auto-generated method stub
@@ -61,6 +62,7 @@ public class AttdApplicationServiceImpl implements AttdApplicationService {
 		ArrayList<AnnualVacationMgtTO> annualVacationMgtList = annualVacationDAO.findAnnualVactionMgtListByYear(year, empCode);
 		return annualVacationMgtList;
 	}
+
 
 	@Override
 	public ArrayList<RestAttdTO> findRestAttdListByEmpCodeAndYM(String empCode, String yearMonth){

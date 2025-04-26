@@ -160,10 +160,7 @@ export default [
             title: '일근태등록',
             to: { name: 'hr-attendreg-daily' },
           },
-          {
-            title: '일근태조회',
-            to: { name: 'hr-attendreg-dailyview'},
-          },
+     
           {
             title: '근태외 신청',
             to: { name: 'hr-attendreg-rest' },
