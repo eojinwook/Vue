@@ -1,59 +1,75 @@
 <script lang="ts" setup>
-import type { Component } from 'vue'
-import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import { VNodeRenderer } from './VNodeRenderer'
-import { layoutConfig } from '@layouts'
-import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
-import { useLayoutConfigStore } from '@layouts/stores/config'
-import { injectionKeyIsVerticalNavHovered } from '@layouts/symbols'
-import type { NavGroup, NavLink, NavSectionTitle, VerticalNavItems } from '@layouts/types'
+import EnterButton from "../components/navComponents/EnterButton.vue";
+import LeaveButton from "../components/navComponents/LeaveButton.vue";
+
+import type { Component } from "vue";
+import { PerfectScrollbar } from "vue3-perfect-scrollbar";
+import { VNodeRenderer } from "./VNodeRenderer";
+import { layoutConfig } from "@layouts";
+import {
+  VerticalNavGroup,
+  VerticalNavLink,
+  VerticalNavSectionTitle,
+} from "@layouts/components";
+import { useLayoutConfigStore } from "@layouts/stores/config";
+import { injectionKeyIsVerticalNavHovered } from "@layouts/symbols";
+import type {
+  NavGroup,
+  NavLink,
+  NavSectionTitle,
+  VerticalNavItems,
+} from "@layouts/types";
 
 interface Props {
-  tag?: string | Component
-  navItems: VerticalNavItems
-  isOverlayNavActive: boolean
-  toggleIsOverlayNavActive: (value: boolean) => void
+  tag?: string | Component;
+  navItems: VerticalNavItems;
+  isOverlayNavActive: boolean;
+  toggleIsOverlayNavActive: (value: boolean) => void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  tag: 'aside',
-})
+  tag: "aside",
+});
 
-const refNav = ref()
+const refNav = ref();
 
-const isHovered = useElementHover(refNav)
+const isHovered = useElementHover(refNav);
 
-provide(injectionKeyIsVerticalNavHovered, isHovered)
+provide(injectionKeyIsVerticalNavHovered, isHovered);
 
-const configStore = useLayoutConfigStore()
+const configStore = useLayoutConfigStore();
 
-const resolveNavItemComponent = (item: NavLink | NavSectionTitle | NavGroup): unknown => {
-  if ('heading' in item)
-    return VerticalNavSectionTitle
-  if ('children' in item)
-    return VerticalNavGroup
+const resolveNavItemComponent = (
+  item: NavLink | NavSectionTitle | NavGroup
+): unknown => {
+  if ("heading" in item) return VerticalNavSectionTitle;
+  if ("children" in item) return VerticalNavGroup;
 
-  return VerticalNavLink
-}
+  return VerticalNavLink;
+};
 
 /*
   ℹ️ Close overlay side when route is changed
   Close overlay vertical nav when link is clicked
 */
-const route = useRoute()
+const route = useRoute();
 
-watch(() => route.name, () => {
-  props.toggleIsOverlayNavActive(false)
-})
+watch(
+  () => route.name,
+  () => {
+    props.toggleIsOverlayNavActive(false);
+  }
+);
 
-const isVerticalNavScrolled = ref(false)
-const updateIsVerticalNavScrolled = (val: boolean) => isVerticalNavScrolled.value = val
+const isVerticalNavScrolled = ref(false);
+const updateIsVerticalNavScrolled = (val: boolean) =>
+  (isVerticalNavScrolled.value = val);
 
 const handleNavScroll = (evt: Event) => {
-  isVerticalNavScrolled.value = (evt.target as HTMLElement).scrollTop > 0
-}
+  isVerticalNavScrolled.value = (evt.target as HTMLElement).scrollTop > 0;
+};
 
-const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
+const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered);
 </script>
 
 <template>
@@ -64,19 +80,16 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
     :class="[
       {
         'overlay-nav': configStore.isLessThanOverlayNavBreakpoint,
-        'hovered': isHovered,
-        'visible': isOverlayNavActive,
-        'scrolled': isVerticalNavScrolled,
+        hovered: isHovered,
+        visible: isOverlayNavActive,
+        scrolled: isVerticalNavScrolled,
       },
     ]"
   >
     <!-- 👉 Header -->
     <div class="nav-header">
       <slot name="nav-header">
-        <NuxtLink
-          to="/"
-          class="app-logo app-title-wrapper"
-        >
+        <NuxtLink to="/" class="app-logo app-title-wrapper">
           <VNodeRenderer :nodes="layoutConfig.app.logo" />
 
           <Transition name="vertical-nav-app-title">
@@ -96,7 +109,10 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
           class="header-action d-none nav-unpin"
           :class="configStore.isVerticalNavCollapsed && 'd-lg-block'"
           v-bind="layoutConfig.icons.verticalNavUnPinned"
-          @click="configStore.isVerticalNavCollapsed = !configStore.isVerticalNavCollapsed"
+          @click="
+            configStore.isVerticalNavCollapsed =
+              !configStore.isVerticalNavCollapsed
+          "
         />
         <Component
           :is="layoutConfig.app.iconRenderer || 'div'"
@@ -104,7 +120,10 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
           class="header-action d-none nav-pin"
           :class="!configStore.isVerticalNavCollapsed && 'd-lg-block'"
           v-bind="layoutConfig.icons.verticalNavPinned"
-          @click="configStore.isVerticalNavCollapsed = !configStore.isVerticalNavCollapsed"
+          @click="
+            configStore.isVerticalNavCollapsed =
+              !configStore.isVerticalNavCollapsed
+          "
         />
         <Component
           :is="layoutConfig.app.iconRenderer || 'div'"
@@ -114,6 +133,14 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
         />
       </slot>
     </div>
+    <!-- 컴포넌트 버튼 있는 곳 -->
+    <!-- 컴포넌트 버튼 있는 곳 -->
+    <div class="attd-buttons">
+      <EnterButton />
+      <LeaveButton />
+    </div>
+    <!-- 컴포넌트 버튼 있는 곳 -->
+    <!-- 컴포넌트 버튼 있는 곳 -->
     <slot name="before-nav-items">
       <div class="vertical-nav-items-shadow" />
     </slot>
@@ -219,7 +246,7 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
 }
 
 // Small screen vertical nav transition
-@media (max-width:1279px) {
+@media (max-width: 1279px) {
   .layout-vertical-nav {
     &:not(.visible) {
       transform: translateX(-#{variables.$layout-vertical-nav-width});
@@ -231,5 +258,12 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
 
     transition: transform 0.25s ease-in-out;
   }
+}
+
+.attd-buttons {
+  display: flex;
+  gap: 2rem; // 버튼 사이 여백
+  margin: 1rem 0; // 위아래 여백
+  justify-content: center; // 중앙 정렬
 }
 </style>
