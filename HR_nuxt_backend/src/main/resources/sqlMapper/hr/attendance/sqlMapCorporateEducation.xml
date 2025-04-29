@@ -22,7 +22,7 @@
 	</resultMap>
 
 	<select id="selectClassList" resultMap="corporateEduResult">
-		SELECT * FROM CORPORATE_EDUCATION
+-- 		SELECT * FROM CORPORATE_EDUCATION
 	</select> 
 
 	
