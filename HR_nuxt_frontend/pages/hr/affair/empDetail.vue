@@ -13,6 +13,7 @@ const router = useRouter();
 // const empCode = inject('empCode', ref(''))
 
 import { useEmpStore } from '@/store/hr/emp'
+import { VBtn, VCard } from "vuetify/lib/components/index.mjs";
 
 const empStore = useEmpStore()
 empStore.loadEmpCode()
@@ -214,6 +215,27 @@ const editFunc = async () => {
   }
 };
 
+//연차생성
+const vacationcreate = async(parms: any) => {
+  console.log("연차생성버튼클릭");
+try{
+  const res = await axios.post("http://localhost:8282/hr/base/vacationcreate");
+  if(res.status===200){
+    console.log("연차 생성 성공",res.status);
+    alert("연차가 성공적으로 생성되었습니다!");
+  }
+  else{
+    alert("연차생성 결과를 확인 할 수 없습니다.");
+  }
+  }catch(e:any){
+        console.error("연차생성 실패", e);
+        
+    alert("연차 생성 실패: " + (e.response?.data?.message || e.message));
+    }
+  };
+
+
+
 // 삭제버튼
 const deleteFunc = async (params: any) => {
   if (empDetail.value.empCode === "") {
@@ -299,7 +321,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1 class="mb-6">직원정보 관리</h1>
+  <h1 class="mb-6">직원정보 관리</h1> 
+  <VBtn class="ml-3" @click="vacationcreate">연차생성</VBtn>
   <VRow>
     <!-- 직원정보조회 -->
     <VCol md="4">
@@ -319,6 +342,7 @@ onMounted(() => {
               />
             </VCol>
           </VRow>
+          
           <VDataTable
             :headers="headers"
             :items="filteredEmpList"

@@ -8,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface AttdServiceFacade {
 
@@ -70,5 +71,10 @@ public interface AttdServiceFacade {
 	ArrayList<DayAttdMgtTO> dayDeadlineRegister(HashMap<String, Object> map);
 	void dayDeadlineCancel(HashMap<String, Object> map);
 
+	//일집계마감
+	Map<String, Object> callAggregateProcedure(String applyDay);
+
+	//월집계
+	Map<String, Object> callMonthlyAggregateProcedure(String applyMonth);
 
 }

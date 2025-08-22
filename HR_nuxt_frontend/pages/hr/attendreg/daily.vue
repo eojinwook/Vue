@@ -185,6 +185,7 @@ const fetchDayAttdList = async () => {
 const insertDayAttd = async () => {
   if (applyDay.value === "") {
     alert("조회할 신청일자를 선택해주세요.");
+    
     isEmployeeDialogVisible.value = !isEmployeeDialogVisible.value;
   } else {
     try {
@@ -195,7 +196,7 @@ const insertDayAttd = async () => {
         attdTypeName: selectedAttdTypeText.value,
         time: time.value,
       };
-
+console.log("데이터 확인",dayAttd)
       if (Object.values(dayAttd).some((datavalue) => datavalue == "")) {
         alert("모든 항목을 선택해주세요.");
       } else {

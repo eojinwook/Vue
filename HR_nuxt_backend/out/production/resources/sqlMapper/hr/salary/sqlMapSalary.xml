@@ -145,7 +145,7 @@
 		]]> 
 	</select>
 	
-	<update id="updateMonthSalary" parameterType="kr.co.seoulit.erp.hr.salary.to.MonthSalaryTO">
+	<update id="updateMonthSalary" parameterType="MonthSalaryTO">
 		UPDATE MONTH_SALARY SET
 		TOTAL_PAYMENT = #{totalPayment},
 		FINALIZE_STATUS = #{finalizeStatus},

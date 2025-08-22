@@ -23,44 +23,44 @@
 		<result property="empName" column="EMP_NAME" />
 	</resultMap>
 
-<!-- 	<parameterMap type="hashmap" id="dayAttdMgtInsertParameter" >
-      <parameter property="applyDay" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
-      <parameter property="result" jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="dayAttdMgtResult" />
-     <parameter property="errorCode" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
-     <parameter property="errorMsg" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
-	</parameterMap>	 -->
+	<!--    <parameterMap type="hashmap" id="dayAttdMgtInsertParameter" >
+          <parameter property="applyDay" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+          <parameter property="result" jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="dayAttdMgtResult" />
+         <parameter property="errorCode" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+         <parameter property="errorMsg" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+       </parameterMap>    -->
 
-		<select id="batchDayAttdMgtProcesses" statementType="CALLABLE" parameterType="java.util.HashMap">
-		<![CDATA[
-        	{call P_HR_ATTENDANCE.P_CREATE_DAY_ATTD_MANAGE(
-     	   		TO_DATE(#{applyDay, mode=IN, javaType=String, jdbcType=VARCHAR},'YYYY/MM/DD')
-    	    	, #{result, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=dayAttdMgtResult}
-        		, #{errorCode, mode=OUT, javaType=String, jdbcType=VARCHAR}
-        		, #{errorMsg, mode=OUT, javaType=String, jdbcType=VARCHAR}
-        	)}
-    	]]>
-	</select>
+	<select id="batchDayAttdMgtProcesses" statementType="CALLABLE" parameterType="java.util.HashMap">
+      <![CDATA[
+		{call P_HR_ATTENDANCE.P_CREATE_DAY_ATTD_MANAGE(
+				TO_DATE(#{applyDay, mode=IN, javaType=String, jdbcType=VARCHAR},'YYYY/MM/DD')
+			, #{result, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=dayAttdMgtResult}
+			, #{errorCode, mode=OUT, javaType=String, jdbcType=VARCHAR}
+			, #{errorMsg, mode=OUT, javaType=String, jdbcType=VARCHAR}
+			  )}
+		]]>
+   </select>
 
 	<!-- 전체사원조회 Y/N -->
 	<select id="selectDayAttdMgtStatus" resultMap="dayAttdMgtResult" parameterType="map">
 		SELECT
-		D.*,
-		E.*,
-		TO_CHAR(D.APPLY_DAYS, 'YYYY-MM-DD') AS APPLY_DAYS_FORMAT
+			D.*,
+			E.*,
+			TO_CHAR(D.APPLY_DAYS, 'YYYY-MM-DD') AS APPLY_DAYS_FORMAT
 		FROM DAY_ATTD_MANAGE D,EMPLOYEE_BASIC E
 
 		WHERE D.EMP_CODE = E.EMP_CODE
-		AND FINALIZE_STATUS = #{applyStatus}
-		AND D.APPLY_DAYS BETWEEN #{startDate} and #{endDate}
+		  AND FINALIZE_STATUS = #{applyStatus}
+		  AND D.APPLY_DAYS BETWEEN #{startDate} and #{endDate}
 	</select>
 
 	<!-- 전체사원조회 ALL  -->
 	<select id="selectDayAttdMgtProcessAll" resultMap="dayAttdMgtResult" parameterType="map">
-	SELECT
-		D.*,
-		E.*,
-		TO_CHAR(D.APPLY_DAYS, 'YYYY-MM-DD') AS APPLY_DAYS_FORMAT
-	FROM DAY_ATTD_MANAGE D,EMPLOYEE_BASIC E
+		SELECT
+			D.*,
+			E.*,
+			TO_CHAR(D.APPLY_DAYS, 'YYYY-MM-DD') AS APPLY_DAYS_FORMAT
+		FROM DAY_ATTD_MANAGE D,EMPLOYEE_BASIC E
 
 		WHERE D.EMP_CODE = E.EMP_CODE
 		  AND D.APPLY_DAYS BETWEEN #{startDate} and #{endDate}
@@ -94,22 +94,37 @@
 
 
 	<update id="updateAttd" parameterType="kr.co.seoulit.erp.hr.attendance.to.DayAttdMgtTO">
-		<![CDATA[
-			UPDATE DAY_ATTD_MANAGE
-			SET FINALIZE_STATUS = #{finalizeStatus}
-			WHERE EMP_CODE = #{empCode}
-			AND APPLY_DAYS = TO_DATE(#{applyDays,mode=IN,javaType=String,jdbcType=DATE},'YYYY-MM-DD hh24:mi:ss')
-    	]]>
-	</update>
+      <![CDATA[
+		UPDATE DAY_ATTD_MANAGE
+		SET FINALIZE_STATUS = #{finalizeStatus}
+		WHERE EMP_CODE = #{empCode}
+		  AND APPLY_DAYS = TO_DATE(#{applyDays,mode=IN,javaType=String,jdbcType=DATE},'YYYY-MM-DD hh24:mi:ss')
+		]]>
+   </update>
 
 
 	<update id="CanCelDayAttdMgtList" parameterType="kr.co.seoulit.erp.hr.attendance.to.DayAttdMgtTO">
-		<![CDATA[
-			UPDATE DAY_ATTD_MANAGE
-			SET FINALIZE_STATUS = #{finalizeStatus}
-			WHERE EMP_CODE = #{empCode}
-			AND APPLY_DAYS = #{applyDays}
-    	]]>
-	</update>
+      <![CDATA[
+		UPDATE DAY_ATTD_MANAGE
+		SET FINALIZE_STATUS = #{finalizeStatus}
+		WHERE EMP_CODE = #{empCode}
+		  AND APPLY_DAYS = #{applyDays}
+		]]>
+   </update>
+
+
+	<select id="selectDayAttdMgtListByApplyDay" resultType="DayAttdMgtTO" parameterType="String">
+		SELECT * FROM DAY_ATTD_MANAGE WHERE APPLY_DAYS = #{applyDay}
+	</select>
+
+
+
+
+	<select id="batchDayAttdMgtProcess" parameterType="string" resultType="DayAttdMgtTO">
+		SELECT * FROM DAY_ATTD_MANAGE
+		WHERE APPLY_DAYS = #{applyDay}
+	</select>
+
+
 
 </mapper>

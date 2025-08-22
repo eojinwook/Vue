@@ -157,6 +157,13 @@ function batchDayAttdMgt(payload: any) {
     },
   })
 }
+//일집계
+function runDailyAggregation(payload: any) {
+  console.log('API를 호출했습니다.', payload)
+
+  return hrApi.post(`${ATTD_URL}/batchDayAttd`,  { applyDay: payload });
+}
+
 
 // 연차 마감 관리
 function executeVacationCreate(payload: any) {
@@ -219,5 +226,6 @@ export {
   removeDayAttd, removeRestAttd,
   removeTravelAndEducationList, selectDayAttdMgtListByStatus,
   selectDayAttdMgtListByStatusAndEmpCode, updateDayAttdmgtApplyStatus, updateVacationApplyStatus
+  ,runDailyAggregation
 }
 

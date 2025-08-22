@@ -254,16 +254,15 @@ public class SalaryApplicationServiceImpl implements SalaryApplicationService{
 		return monthSalaryDAO.selectMonthSalayInit(applyYearMonth,empCode);
 	}
 	@Override
-	public HashMap<String, Object> findSalaryList(String applyYearMonth, String empCode, String deptCode) {
+	public HashMap<String,Object> findSalaryList(String applyYearMonth, String empCode, String deptCode) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> param = new HashMap<>();
 		param.put("empCode", empCode);
 		param.put("applyYearMonth", applyYearMonth);
 		param.put("deptCode", deptCode);
-		monthSalaryDAO.selectMonthSalary(param);
-		System.out.println("param 확인");
+
 		System.out.println(param);
-		return param;
+		return monthSalaryDAO.batchMonthSalaryProcess(param);
 	}
 	@Override
 	public void modifyMonthSalary(MonthSalaryTO monthSalary) {
@@ -277,9 +276,12 @@ public class SalaryApplicationServiceImpl implements SalaryApplicationService{
 	}
 	
 	@Override
-	public ArrayList<MonthSalaryTO> findSalaryList(String applyYearMonth, String empCode) {
-		// TODO Auto-generated method stub
-		return monthSalaryDAO.selectMonthSalaryList(applyYearMonth,empCode);
+	public ArrayList<MonthSalaryTO> findSalaryListOnly(String applyYearMonth, String empCode, String deptCode) {
+		HashMap<String, Object> param = new HashMap<>();
+		param.put("applyYearMonth", applyYearMonth);
+		param.put("empCode", empCode);
+		param.put("deptCode", deptCode);
+		return monthSalaryDAO.selectMonthSalaryList(param);
 	}
 	
 	@Override
@@ -301,7 +303,5 @@ public class SalaryApplicationServiceImpl implements SalaryApplicationService{
 		monthDeductionDAO.deleteMonthDeduction(applyYearMonth, empCode);
 	}
 
-	
-	
 	
 }

@@ -5,6 +5,7 @@ import { VDataTable } from "vuetify/labs/VDataTable";
 
 const date = ref("");
 const dayAttdMgtList = ref([]);
+const dayRegiselect = ref([]);
 
 const headers: AttenHeaders[] = [
   { key: "applyDays", title: "날짜", width: 120 },
@@ -28,6 +29,15 @@ const regiEnd = async () => {
   dayAttdMgtList.value = attenStore().dayAttdMgtList;
   console.log("[dayAttdMgtList]", dayAttdMgtList.value);
 };
+
+//일집계
+const regiselect = async () => {
+  await attenStore().runDailyAggregation(date.value);
+  dayAttdMgtList.value = attenStore().dayAttdMgtList;
+  console.log("[일집계 결과]", dayAttdMgtList.value);
+  
+
+};
 </script>
 
 <template>
@@ -44,8 +54,13 @@ const regiEnd = async () => {
         <VBtn class="mt-6" height="43" width="150" @click="regiEnd">
           <VIcon start icon="tabler-checkbox" />등록 마감
         </VBtn>
+
+        <VBtn class="mt-6" height="43" width="150" @click="regiselect">    
+          <VIcon start icon="tabler-checkbox" />
+           일근태 집계
+          </VBtn>
       </VCol>
     </VRow>
   </VContainer>
-  <VDataTable :headers="headers" :items="dayAttdMgtList" :items-per-page="10" />
+  <VDataTable :headers="headers" :items="dayAttdMgtList || []" :items-per-page="10" />
 </template>

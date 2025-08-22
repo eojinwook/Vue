@@ -39,6 +39,7 @@
       , #{attdTypeCode}
       , #{attdTypeName}
       , #{time}
+          ,#{empName}
       )
    </insert>
 

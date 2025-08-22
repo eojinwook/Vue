@@ -1,49 +1,79 @@
-<script lang="ts" setup>
-import MonthTap from '@/views/hr/attndmgmt/month/monthTap.vue'
-import { useRouter } from "vue-router"; // router 가져오기
-import { inject } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useAttenStore } from '@/store/hr/attendance'
 
-const router = useRouter();
-import { useEmpStore } from '@/store/hr/emp'
+const store = useAttenStore()
+const applyYearMonth = ref('2025-06') // 기본값 예시
 
-const empStore = useEmpStore()
-empStore.loadEmpCode()
-
-console.log("현재 로그인된 직원 코드:", empStore.empCode)
-
-// 로그인된 empCode가 'EMP-01'이 아닌 경우 페이지 이동
-if (empStore.empCode !== 'EMP-01' && empStore.empCode !== 'EMP-00') {
-  router.push('/hr/confinement/unauthorized')
+// ✅ 집계 실행
+const handleAggregate = async () => {
+  if (!applyYearMonth.value) return alert('📌 집계 대상 연월을 입력하세요!')
+  await store.aggregateMonth(applyYearMonth.value)
 }
 
+// ✅ 목록 조회
+const handleSearch = async () => {
+  if (!applyYearMonth.value) return alert('📌 조회할 연월을 입력하세요!')
+  await store.loadMonthList(applyYearMonth.value)
+}
 
-
-const tab = ref('personal-info')
+// ✅ 마감 처리
+const handleClose = async () => {
+  if (store.monthAttdList.length === 0) return alert('⚠️ 마감할 데이터가 없습니다!')
+  await store.finalizeMonth()
+}
 </script>
 
 <template>
-  <h1 class="mb-6">월근태 마감관리</h1>
-  <VCard>
-    <VTabs
-      v-model="tab"
-      height="70"
-    >
-      <VTab value="personal-info">
-        월근태 마감관리
-      </VTab>
-    </VTabs>
-  </VCard>
-  <VCard flat>
-    <VCardText>
-      <VWindow
-        v-model="tab"
-        class="disable-tab-transition"
-      >
-        <!-- 월근태 마감관리 -->
-        <VWindowItem value="personal-info">
-          <MonthTap />
-        </VWindowItem>
-      </VWindow>
-    </VCardText>
-  </VCard>
+  <div class="p-6 space-y-4">
+    <h1 class="text-2xl font-bold">📅 월근태 집계</h1>
+
+    <div class="flex items-center gap-4">
+      <input
+        v-model="applyYearMonth"
+        placeholder="예: 2025-06"
+        class="border rounded px-3 py-2"
+      />
+      <v-btn @click="handleAggregate">
+        집계 실행
+      </v-btn>
+      <v-btn @click="handleSearch" >
+        목록 조회
+      </v-btn>
+      <v-btn @click="handleClose">
+      마감 처리
+      </v-btn>
+      
+    </div>
+
+    <!-- ✅ 월근태 테이블 -->
+    <table class="w-full mt-6 border">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="border px-2 py-1">사번</th>
+          <th class="border px-2 py-1">연월</th>
+          <th class="border px-2 py-1">총 근무시간</th>
+          <th class="border px-2 py-1">지각일수</th>
+          <th class="border px-2 py-1">마감여부</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="row in store.monthAttdList" :key="row.empCode + row.applyYearMonth">
+          <td class="border px-2 py-1">{{ row.empCode }}</td>
+          <td class="border px-2 py-1">{{ row.applyYearMonth }}</td>
+          <td class="border px-2 py-1">{{ row.workHour }}</td>
+          <td class="border px-2 py-1">{{ row.lateDays }}</td>
+          <td class="border px-2 py-1">
+            {{ row.finalizeStatus === 'Y' ? '✅ 마감' : '⏳ 진행중' }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
+
+<style scoped>
+input {
+  width: 200px;
+}
+</style>

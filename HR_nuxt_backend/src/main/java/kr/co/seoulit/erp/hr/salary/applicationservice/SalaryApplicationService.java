@@ -47,15 +47,17 @@ public interface SalaryApplicationService {
 	
 	
 	public ArrayList<MonthSalaryTO> initSalaryList(String applyYearMonth,String empCode);
-	public HashMap<String, Object> findSalaryList(String applyYearMonth, String empCode, String deptCode);
+	public HashMap<String,Object> findSalaryList(String applyYearMonth, String empCode, String deptCode);
 	public void modifyMonthSalary(MonthSalaryTO monthSalary);
 	public void removeMonthSalary(String applyYearMonth, String empCode);
 	
-	public  ArrayList<MonthSalaryTO> findSalaryList(String applyYearMonth, String empCode);
+	public  ArrayList<MonthSalaryTO> findSalaryListOnly(String applyYearMonth, String empCode,String deptCode);
 	
 	public void removeMonthExtSal(String applyYearMonth,String empCode);
 	public void removeMonthDeduction(String applyYearMonth,String empCode);
 	
 
 	public ArrayList<MonthDeductionTO> findMonthDeduction(String applyYearMonth, String empCode);
+
+
 }

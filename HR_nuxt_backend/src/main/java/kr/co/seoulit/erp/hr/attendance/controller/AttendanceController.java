@@ -20,8 +20,11 @@ public class AttendanceController {
         attendanceServiceFacade.callEnterProcedure(to.getEmpCode(),to.getWorkDate());
 
     }
+
+
     @PostMapping("/leave")
     public void callLeave(@RequestBody AttendanceRequestTo to) {
+        System.out.println("empCode " + to.getEmpCode());
         attendanceServiceFacade.callLeaveProcedure(to.getEmpCode(), to.getWorkDate());
     }
 }

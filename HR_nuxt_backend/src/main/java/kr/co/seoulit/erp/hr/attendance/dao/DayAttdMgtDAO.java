@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Mapper
 public interface DayAttdMgtDAO {
@@ -20,9 +21,12 @@ public interface DayAttdMgtDAO {
 
 	public void updateDayAttdMgtList(HashMap<String, Object> map1);
 
-	public ArrayList<DayAttdMgtTO> selectDayAttdMgt1(HashMap<String, Object> map);// �κ�
+	public ArrayList<DayAttdMgtTO> selectDayAttdMgt1(HashMap<String, Object> map);//  κ
 
-	public HashMap<String, Object> batchDayAttdMgtProcesses(HashMap<String, Object> map); // �κ�
+	public HashMap<String, Object> batchDayAttdMgtProcesses(HashMap<String, Object> map); //  κ
 
 	public void CanCelDayAttdMgtList(HashMap<String, Object> map1);
+
+	//일집계
+	List<DayAttdMgtTO> selectDayAttdMgtListByApplyDay(String applyDay);
 }

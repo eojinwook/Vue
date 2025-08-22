@@ -233,23 +233,31 @@ export const salaryStore = defineStore('salaryStore', {
 
     /**
      * 월 급여 생성 및 조회
-     * 승우 수정
      */
     async SALARY_PROCESS(payload: any) {
-      try {
-        console.log(payload)
+  try {
+    console.log(payload )
 
-        const response = await salaryProcess(payload)
-        const responseData = response.data.salaryList.filter(item => item.empCode === payload.empCode)[0]
+    const response = await salaryProcess(payload)
 
-        this.salaryList = responseData
-
-        return response.data
-      }
-      catch (err: any) {
-        throw new Error(err)
-      }
-    },
+    // 🔐 방어코드 추가
+    const list = response.data.salaryList
+      console.log("[📥SALARY_PROCESS 응답 salaryList]", list)
+      
+    if (!Array.isArray(list)) {
+      console.warn("salaryList가 undefined이거나 배열이 아님", list)
+      this.salaryList = []
+      return
+    }
+      
+    const responseData = list.find(item => item && item.empCode === payload.empCode)
+    this.salaryList = responseData ?? {}
+    return response.data
+  } catch (err: any) {
+    console.error("SALARY_PROCESS 실패:", err)
+    throw new Error(err)
+  }
+},
 
     /**
      * 월 급여 승인 수정
@@ -294,11 +302,26 @@ export const salaryStore = defineStore('salaryStore', {
       }
     },
 
+//승인 처리 후 해당 사원의 급여 데이터 재조회
+async FETCH_SALARY_DETAIL(payload: any) {
+  try {
+    const response = await findSalary(payload)
+  console.log('✅ salaryList.value:', salaryList.value)
+    const detail = response.data.salaryList.find((item: any) => item.empCode === payload.empCode)
+    this.salaryList = detail ?? {}
+    return detail.data
+  } catch (err: any) {
+    console.log('✅ salaryList.value1:', salaryList.value)
+    console.log('Fetch_SALARY_DETAIL 실패: ' , err)
+    throw new Error(err)
+  }
+},
+
     // -------------------------------월급여 조회-------------------------------
     /**
      * 월 급여 조회
      */
-    async SEARCH_SALARY(payload: any) {
+  async SEARCH_SALARY(payload: any) {
       try {
         const response = await findSalary(payload)
 

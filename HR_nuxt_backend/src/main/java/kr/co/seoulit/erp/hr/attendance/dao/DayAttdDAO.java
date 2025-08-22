@@ -2,6 +2,7 @@ package kr.co.seoulit.erp.hr.attendance.dao;
 
 import kr.co.seoulit.erp.hr.affair.to.EmpTO;
 import kr.co.seoulit.erp.hr.attendance.to.DayAttdTO;
+import kr.co.seoulit.erp.hr.attendance.to.MonthAttdMgtTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,4 +19,8 @@ public interface DayAttdDAO {
 	void deleteDayAttd(Map<String, Object> map);
 
 	HashMap<String,Object> batchInsertDayAttd(HashMap<String, Object> map);
+
+
+
+
 }

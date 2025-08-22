@@ -24,6 +24,8 @@ if (empStore.empCode !== 'EMP-01' && empStore.empCode !== 'EMP-00') {
 
 const options = ref({ page: 1, itemsPerPage: 5, sortBy: [''], sortDesc: [false] })
 
+
+const selectedRow = ref(null)
 const search = ref('')
 const selectedYear = ref('')
 const selectedMonth = ref('')
@@ -37,6 +39,7 @@ const headers = [
   { title: '사원 명', key: 'empName', align: 'center' },
   { title: '실 지급액', key: 'realSalary', align: 'center' },
   { title: '승인상태', key: 'finalizeStatus', align: 'center' },
+   { title: '작업', key: 'actions', align: 'center' },
 ]
 
 const fetchData = async () => {
@@ -104,6 +107,46 @@ const filteredData = computed(() => {
   })
 })
 
+
+
+const handleSalaryCreate = async (item: any) => {
+  const yearMonth = `${selectedYear.value}-${selectedMonth.value.trim().padStart(2, '0')}`
+
+  const rowData = {
+    empCode: item.empCode,
+    deptCode: item.deptCode,
+    applyYearMonth: yearMonth,
+  }
+
+  const monthDeductionData = {
+    empCode: item.empCode,
+    applyYearMonth: yearMonth,
+  }
+
+  try {
+
+     salaryStore().SET_SELECTED_ROW(rowData)
+       console.log("📌 SET_SELECTED_ROW rowData:", rowData)
+    // ✅ 먼저 rowList 설정 (모달에서 보여줄 기본급, 상여 등 포함)
+    await salaryStore().SET_ROW_LIST(rowData)
+
+    // ✅ 공제 항목도 미리 불러오기
+    await salaryStore().FIND_TAX(monthDeductionData)
+
+    // ✅ 모드 구분용 버튼 상태 설정
+    salaryStore().SET_DIALOG_BTN('create')
+
+    // ✅ 모달 열기
+    salaryStore().SET_DIALOG(true)
+
+  } catch (err) {
+    console.error("급여 생성 준비 실패", err)
+    alert("급여 생성 중 오류가 발생했습니다.")
+  }
+}
+
+
+
 onBeforeMount(fetchData)
 watch([selectedYear, selectedMonth], fetchData2, { immediate: true })
 </script>
@@ -149,8 +192,11 @@ watch([selectedYear, selectedMonth], fetchData2, { immediate: true })
     </VCardText>
     <VDivider />
     <VDataTable :headers="headers" :items="filteredData" :items-per-page="options.itemsPerPage" :page="options.page"
-      :options="options" @click:row="(_, row) => handleRowClick(row)">
-      <template #bottom>
+      :options="options">
+        <template #[`item.actions`]="{ item }">
+    <VBtn size="small" @click="handleSalaryCreate(item)">급여 생성</VBtn>
+  </template>
+           <template #bottom>
         <VDivider />
         <VCardText class="pt-2">
           <div class="d-flex flex-wrap justify-center justify-sm-space-between gap-y-2 mt-2">
@@ -165,5 +211,6 @@ watch([selectedYear, selectedMonth], fetchData2, { immediate: true })
       </template>
     </VDataTable>
   </VCard>
-  <SalregMonthModal :fetch-data2="fetchData2" />
+ <SalregMonthModal :fetch-data2="fetchData2" />
+
 </template>

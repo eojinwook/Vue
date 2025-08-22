@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { VDataTable } from "vuetify/labs/VDataTable";
 import type { AttenHeaders } from "@/types/attendance/types";
+import { attenStore } from "@/store/hr/attendance";
 
 const selectedSearchType = ref("");
 const selectedDeptCode = ref("");
@@ -49,6 +50,12 @@ const data = [
     finalizeStatus: "N",
   },
 ];
+const regiMonthEnd = async () => {
+  await attenStore().BATCH_DAY_ATTDMGT(date.value);
+  dayAttdMgtList.value = attenStore().dayAttdMgtList;
+  console.log("[dayAttdMgtList]", dayAttdMgtList.value);
+  alert("마감");
+};
 
 /**
  * 프로시저가 없음. 구현불가
@@ -58,24 +65,24 @@ const data = [
 <template>
   <VContainer class="mt-2">
     <VRow>
-      <VCol cols="12" md="2" offset-md="6">
+      <!-- <VCol cols="12" md="2" offset-md="6">
         <VBtn class="mt-6" height="43" width="150">
           <VIcon start icon="tabler-search" />현황 조회
         </VBtn>
-      </VCol>
-      <VCol cols="12" md="2">
-        <VBtn class="mt-6" height="43" width="150">
+      </VCol> -->
+      <VCol cols="12" md="2" offset-md="10">
+        <VBtn class="mt-6" height="43" width="150" @click="regiMonthEnd">
           <VIcon start icon="tabler-square-key" />전체 마감
         </VBtn>
       </VCol>
       <VCol cols="12" md="2">
-        <VBtn class="mt-6" height="43" width="150">
+        <!-- <VBtn class="mt-6" height="43" width="150">
           <VIcon start icon="tabler-square-x" />마감 취소
-        </VBtn>
+        </VBtn> -->
       </VCol>
     </VRow>
     <VRow class="mt-6">
-      <VCol cols="12" md="2">
+      <!-- <VCol cols="12" md="2">
         <AppSelect
           label="조회선택타입"
           placeholder="조회"
@@ -124,11 +131,12 @@ const data = [
           clearable
           clear-icon="tabler-x"
         />
-      </VCol>
+      </VCol> -->
     </VRow>
   </VContainer>
   <VRow class="mt-6">
     <VCol>
+      
       <VDataTable :headers="headers" :items="data" :items-per-page="10" />
     </VCol>
   </VRow>

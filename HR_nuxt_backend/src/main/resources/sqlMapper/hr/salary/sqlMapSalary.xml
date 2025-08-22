@@ -202,7 +202,9 @@
 				) S
 			WHERE B.EMP_CODE = S.EMP_CODE(+)
 			AND B.EMP_CODE LIKE #{empCode}
-			AND S.FINALIZE_STATUS = 'Y'
+			AND B.DEPT_CODE LIKE #{deptCode}
+			--AND S.FINALIZE_STATUS = 'Y'
+
 			ORDER BY S.APPLY_YEAR_MONTH DESC, S.EMP_CODE
 		]]> 
 	</select>

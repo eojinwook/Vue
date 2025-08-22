@@ -3,6 +3,7 @@ package kr.co.seoulit.erp.hr.salary.servicefacade;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import kr.co.seoulit.erp.hr.salary.dao.MonthSalaryDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,8 @@ public class SalaryServiceFacadeImpl implements SalaryServiceFacade{
 	private SalaryApplicationService salaryApplicationService;
 	@Autowired
 	private BonusApplicationService bonusApplicationService; 
-	
+	@Autowired
+	private MonthSalaryDAO monthSalaryDAO;
 	@Override
 	public ArrayList<BaseSalaryTO> findBaseSalaryList() {		
 			ArrayList<BaseSalaryTO> baseSalaryList=salaryApplicationService.findBaseSalaryList();
@@ -205,8 +207,21 @@ public class SalaryServiceFacadeImpl implements SalaryServiceFacade{
 
 	@Override
 	public HashMap<String, Object> findSalaryList(String applyYearMonth, String empCode, String deptCode) {
-		// TODO Auto-generated method stub
-		return salaryApplicationService.findSalaryList(applyYearMonth, empCode, deptCode);
+
+		HashMap<String, Object> param = new HashMap<>();
+		param.put("empCode", empCode);
+		param.put("applyYearMonth", applyYearMonth);
+		param.put("deptCode", deptCode);
+
+		// OUT 파라미터 준비
+		param.put("RESULT", null);
+		param.put("ERROR_CODE", null);
+		param.put("ERROR_MSG", null);
+
+		// 프로시저 호출
+		monthSalaryDAO.selectMonthSalaryList(param);
+
+		return param;
 	}
 	
 	@Override
@@ -226,9 +241,9 @@ public class SalaryServiceFacadeImpl implements SalaryServiceFacade{
 	}
 
 	@Override
-	public ArrayList<MonthSalaryTO> findSalary(String applyYearMonth, String empCode) {
+	public ArrayList<MonthSalaryTO> findSalary(String applyYearMonth, String empCode, String deptCode) {
 		// TODO Auto-generated method stub
-		return salaryApplicationService.findSalaryList(applyYearMonth,empCode);
+		return salaryApplicationService.findSalaryListOnly(applyYearMonth,empCode,deptCode);
 	}
 	
 
@@ -238,7 +253,8 @@ public class SalaryServiceFacadeImpl implements SalaryServiceFacade{
 		return salaryApplicationService.findMonthDeduction(applyYearMonth, empCode);
 	}
 
-	
+
+
 
 	
 }

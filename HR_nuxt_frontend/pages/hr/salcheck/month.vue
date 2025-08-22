@@ -71,7 +71,7 @@ const fetchData2 = async () => {
     applyYearMonth: `${selectedYear.value}-${month.trim()}`,
     empCode: emp,
     detailCodeName: "%",
-    finalizeStatus: "Y",
+    // finalizeStatus: "%",
   };
 
   await salaryStore().SEARCH_SALARY(findSalaryData);

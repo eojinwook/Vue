@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import DailyBatchTap from '@/views/hr/attndmgmt/daily/dailyBatchTap.vue'
-import DailySearchTap from '@/views/hr/attndmgmt/daily/dailySearchTap.vue'
+import DailyBatchTap from '@/views/hr/attndmgmt/daily/dailyBatchTap.vue';
+import DailySearchTap from '@/views/hr/attndmgmt/daily/dailySearchTap.vue';
 import { useRouter } from "vue-router"; // router 가져오기
 import { inject } from 'vue';
 

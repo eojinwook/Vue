@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import axios from 'axios'
 import {
   addDayAttd,
   addRequestVacation, addRestAttd,
@@ -20,7 +21,60 @@ import {
   selectDayAttdMgtListByStatusAndEmpCode,
   updateDayAttdmgtApplyStatus,
   updateVacationApplyStatus,
+  runDailyAggregation,
+  
+
 } from '@/api/hr/attendance'
+
+import {
+  runMonthlyAggregation,
+  fetchMonthAttendanceList,
+  closeMonthAttendance,
+} from '@/api/hr/attendance/useMonthAttendance';
+
+
+export const useAttenStore = defineStore('attenStore', {
+  state: () => ({
+    dayAttdList: [],
+    empList: [],
+    restAttdList: [],
+    monthAttdList: [] as any[],
+  }),
+
+  actions: {
+    async aggregateMonth(applyYearMonth: string) {
+      const { data } = await runMonthlyAggregation(applyYearMonth);
+      if (data.errorCode === 0) {
+        this.monthAttdList = data.monthAttdMgtList;
+      } else {
+        alert('집계 실패: ' + data.errorMsg);
+      }
+    },
+
+    async loadMonthList(applyYearMonth: string) {
+      const { data } = await fetchMonthAttendanceList(applyYearMonth);
+      if (data.errorCode === 0) {
+        this.monthAttdList = data.monthAttdMgtList;
+      } else {
+        alert('조회 실패: ' + data.errorMsg);
+      }
+    },
+
+    async finalizeMonth() {
+      const { data } = await closeMonthAttendance(this.monthAttdList);
+      if (data.errorCode === 0) {
+        alert('마감 성공!');
+      } else {
+        alert('마감 실패: ' + data.errorMsg);
+      }
+    },
+  }
+});
+
+
+
+
+
 
 export const attenStore = defineStore('attenStore', {
   state: () => ({
@@ -31,6 +85,7 @@ export const attenStore = defineStore('attenStore', {
     restAttdList: [],
     travelAndEducationList: [],
     dayAttdMgtList: [],
+    dayRegiselect: [],
   }),
   actions: {
     SET_DIALOG_BTN(payload: any) {
@@ -275,6 +330,26 @@ export const attenStore = defineStore('attenStore', {
         throw new Error(err)
       }
     },
+    //일집계
+    
+   async runDailyAggregation(applyDay: string) {
+  try {
+    const response = await runDailyAggregation(applyDay); // 여기서 POST 한번만 호출
+    if (response.data.errorCode === 0) {
+      this.dayAttdMgtList = response.data.dayAttdMgtList; // 결과 저장
+    } else {
+      alert("집계 실패: " + response.data.errorMsg);
+    }
+  } catch (err: any) {
+    console.error("집계 API 호출 실패", err);
+    alert("집계 요청 중 오류 발생");
+  }
+},
+
+
+
+
+    
 
     // 연차 마감 관리
     async BETCH_VACATION_CREATE(payload: any) {

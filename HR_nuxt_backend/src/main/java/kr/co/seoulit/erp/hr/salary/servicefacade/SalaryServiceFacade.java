@@ -59,8 +59,10 @@ public interface SalaryServiceFacade {
 	public void modifyMonthSalary(MonthSalaryTO monthSalary);
 	public void removeMonthSalary(String applyYearMonth, String empCode);
 	
-	public ArrayList<MonthSalaryTO> findSalary(String applyYearMonth, String empCode);
+	public ArrayList<MonthSalaryTO> findSalary(String applyYearMonth, String empCode,String deptCode);
 	
 	
 	public ArrayList<MonthDeductionTO> findMonthDeduction(String applyYearMonth, String empCode);
+
+
 }

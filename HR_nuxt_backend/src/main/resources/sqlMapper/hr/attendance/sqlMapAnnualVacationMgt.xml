@@ -43,6 +43,7 @@
       <parameter property="errorCode" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
       <parameter property="errorMsg" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
    </parameterMap>
+
    <select id="batchAnnualVacationMgtProcess" statementType="CALLABLE" parameterMap="annualVacationMgtParameter">
       <![CDATA[
            {call P_HR_VACATION.P_CREATE_ANNUAL_VACATION(?,?,?,?)}

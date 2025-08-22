@@ -13,51 +13,64 @@ import java.util.HashMap;
 @Tag(name = "월근태 관리", description = "월근태 관리 API")
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/hr/attendance/*")
+@RequestMapping("/hr/attendance")
 public class MonthAttdManageController {
 
 	@Autowired
 	private AttdServiceFacade attdServiceFacade;
 
-	private ModelMap modelMap = new ModelMap();
-
-	@RequestMapping(value = "/monthAttendanceManage", method = RequestMethod.GET)
+	// ✅ 월근태 조회
+	@GetMapping("/monthAttendanceManage")
 	public ModelMap findMonthAttdMgtList(@RequestParam String applyYearMonth) {
-		// TODO Auto-generated method stub
-		ArrayList<MonthAttdMgtTO> monthAttdMgtList = null;
+		ModelMap modelMap = new ModelMap();
 		try {
-			monthAttdMgtList = attdServiceFacade.findMonthAttdMgtList(applyYearMonth);
+			ArrayList<MonthAttdMgtTO> monthAttdMgtList = attdServiceFacade.findMonthAttdMgtList(applyYearMonth);
 			modelMap.put("monthAttdMgtList", monthAttdMgtList);
 			modelMap.put("errorMsg", "success");
 			modelMap.put("errorCode", 0);
-
-		} catch (Exception ioe) {
-
-			modelMap.clear();
-			modelMap.put("errorMsg", ioe.getMessage());
+		} catch (Exception e) {
+			modelMap.put("errorCode", -1);
+			modelMap.put("errorMsg", e.getMessage());
 		}
 		return modelMap;
 	}
 
-	@RequestMapping(value = "/monthAttendanceClose", method = RequestMethod.POST) // 월 마감 함수
+	// ✅ 월근태 마감
+	@PostMapping("/monthAttendanceClose")
 	public ModelMap modifyMonthAttdList(@RequestBody HashMap<String, ArrayList<MonthAttdMgtTO>> monthAttdMgt) {
-
-		System.out.println("QWEQWEQWEWQEQWEWQEWQ" + monthAttdMgt);
-
+		ModelMap modelMap = new ModelMap();
 		try {
 			ArrayList<MonthAttdMgtTO> monthAttdMgtList = monthAttdMgt.get("monthAttdMgt");
-//			Gson gson = new Gson();
-//			ArrayList<MonthAttdMgtTO> monthAttdMgtList = gson.fromJson(sendData, new TypeToken<ArrayList<MonthAttdMgtTO>>(){}.getType());
-//			attdServiceFacade.modifyMonthAttdMgtList(monthAttdMgtList);
 			attdServiceFacade.modifyMonthAttdMgtList(monthAttdMgtList);
 			modelMap.put("errorMsg", "success");
 			modelMap.put("errorCode", 0);
-		} catch (Exception ioe) {
-
-			modelMap.clear();
-			modelMap.put("errorMsg", ioe.getMessage());
+		} catch (Exception e) {
+			modelMap.put("errorCode", -1);
+			modelMap.put("errorMsg", e.getMessage());
 		}
 		return modelMap;
 	}
 
+	// ✅ 월근태 집계 실행
+	@PostMapping("/batchMonthAttd")
+	public HashMap<String, Object> batchMonthAttd(@RequestBody HashMap<String, String> param) {
+		HashMap<String, Object> result = new HashMap<>();
+		try {
+			String applyYearMonth = param.get("applyYearMonth");
+
+			if (applyYearMonth == null || applyYearMonth.trim().isEmpty()) {
+				result.put("errorCode", -1);
+				result.put("errorMsg", "applyYearMonth 값이 없습니다.");
+				return result;
+			}
+
+			return (HashMap<String, Object>) attdServiceFacade.callMonthlyAggregateProcedure(applyYearMonth);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put("errorCode", -999);
+			result.put("errorMsg", "월근태 집계 중 서버 오류 발생: " + e.getMessage());
+			return result;
+		}
+	}
 }
